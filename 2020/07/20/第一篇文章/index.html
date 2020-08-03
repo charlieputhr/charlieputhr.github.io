@@ -371,8 +371,8 @@
                                 <span class="chip bg-color">Typora</span>
                             </a>
                         
-                            <a href="/tags/Markdown/">
-                                <span class="chip bg-color">Markdown</span>
+                            <a href="/tags/Markdown%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5%EF%BC%9A/">
+                                <span class="chip bg-color">Markdown参考链接：</span>
                             </a>
                         
                     </div>
@@ -412,9 +412,59 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="参照链接"><a href="#参照链接" class="headerlink" title="参照链接"></a>参照链接</h1><p>​        <a href="https://godweiyang.com/2018/04/13/hexo-blog/" target="_blank" rel="noopener">https://godweiyang.com/2018/04/13/hexo-blog/</a></p>
-<p>图片测试</p>
-<p><img src="/img/16.jpg" alt="1"></p>
+                <p>参考链接：</p>
+<p>​    <a href="https://godweiyang.com/2018/04/13/hexo-blog/" target="_blank" rel="noopener">https://godweiyang.com/2018/04/13/hexo-blog/</a></p>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p>安装Node.js并添加国内镜像源</p>
+<p>安装git并注册github账号</p>
+<p>安装hexo</p>
+<p>连接GitHub和本地</p>
+<p>编写并发布文章</p>
+<p>绑定域名</p>
+<h2 id="安装Node-js并添加国内镜像源"><a href="#安装Node-js并添加国内镜像源" class="headerlink" title="安装Node.js并添加国内镜像源"></a>安装Node.js并添加国内镜像源</h2><h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><p><a href="https://link.zhihu.com/?target=https%3A//nodejs.org/dist/v9.11.1/node-v9.11.1-x64.msi">https://link.zhihu.com/?target=https%3A//nodejs.org/dist/v9.11.1/node-v9.11.1-x64.msi</a></p>
+<p>首先点击链接下载，所有选项全部默认。安装完成后，打开cmd，输入node -v和npm -v出现版本号则表示安装成功。</p>
+<h3 id="添加国内镜像源"><a href="#添加国内镜像源" class="headerlink" title="添加国内镜像源"></a>添加国内镜像源</h3><p>这里添加的是阿里国内的镜像源，打开cmd输入以下命令</p>
+<pre class=" language-bash"><code class="language-bash"><span class="token function">npm</span> config <span class="token keyword">set</span> registry https://registry.npm.taobao.org</code></pre>
+<h2 id="安装git并注册github账号"><a href="#安装git并注册github账号" class="headerlink" title="安装git并注册github账号"></a>安装git并注册github账号</h2><h3 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h3><p>安装了Git我们才能把本地网页文件上传到GitHub上面，安装过程中所有选项全部默认，在最后添加路径时选择Use Git from the Windows Command Prompt</p>
+<p>安装完成后在cmd中输入git –version即可验证是否安装成功。</p>
+<h3 id="注册github账号"><a href="#注册github账号" class="headerlink" title="注册github账号"></a>注册github账号</h3><p>搜索GitHub，进入官网进行注册。</p>
+<p><img src="/img/%E6%96%B0%E5%BB%BA%E9%A1%B9%E7%9B%AE.png" alt=""></p>
+<p>如上图所示新建一个项目，再输入项目名，项目名后面一定要加上后缀.git.io,最后勾选readme初始化</p>
+<p>![](/img/repository’s name.png)</p>
+<p>项目创建完成后，点击settings，下拉有一个GitHub Pages,然后choose a theme选择博客的主题，回到GitHub Pages，点击那个链接就可以看到自己的网页了。</p>
+<h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><p>在自己喜欢的地方创建一个文件夹用来放自己的博客文件，我的博客文件存在D:\personal\blog目录下。</p>
+<p>在该目录下右键选择Git Bash Here,输入npm i hexo-cli -g安装hexo，会有几个报错无视即可，安装完成后输入hexo -v验证是否安装成功。</p>
+<p>然后初始化网站，输入hexo init初始化文件夹，接着输入npm install安装必备组件。</p>
+<p>现在本地的网站配置也弄好了，输入hexo g生成静态网页，接着输入hexo s打开本地服务器，然后本地打开<a href="http://localhost:4000/，就可以看到我们的博客了，最后ctrl" target="_blank" rel="noopener">http://localhost:4000/，就可以看到我们的博客了，最后ctrl</a> c关闭本地服务器。</p>
+<h2 id="连接GitHub与本地"><a href="#连接GitHub与本地" class="headerlink" title="连接GitHub与本地"></a>连接GitHub与本地</h2><p>在桌面右键选择git bash,输入一下命令：</p>
+<p><code>git config --global user.name &quot;charlieputhr&quot;</code></p>
+<p><code>git config --global user.email &quot;2541826931@qq.com&quot;</code></p>
+<p>用户名和邮箱由注册github的信息自行修改。</p>
+<p>然后生成SSH key：</p>
+<p><code>ssh-keygen -t rsa -C &quot;2541826931@qq.com&quot;</code></p>
+<p>同样的，邮箱改为自己注册github时的邮箱</p>
+<p>然后获取密钥内容：</p>
+<p><code>cat ~/.ssh/id_rsa.pub</code></p>
+<p>将密钥内容复制，打开github，在头像下面点击settings，再点击SSH and GPG keys,新建一个SSH，随意取个名字，将复制的内容粘贴到框中，点击确定保存。</p>
+<p>gitbash输入</p>
+<p><code>ssh -T git@github.com</code>如果下面的语句出现了你的用户名，就表示成功了：Hi charlieputhr! You’ve successfully authenticated,but GitHub does not provide shell access.</p>
+<p>打开博客根目录下的_config.yml文件，这是博客的配置文件，可以在这里修改与博客相关的信息。</p>
+<p>修改最后一行的配置，如下图：</p>
+<p><img src="/img/%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE.png" alt=""></p>
+<p>repository修改为自己的github项目地址。</p>
+<h2 id="编写并发布文章"><a href="#编写并发布文章" class="headerlink" title="编写并发布文章"></a>编写并发布文章</h2><p>在博客根目录下右键打开git bash，安装一个扩展npm i hexo-deployer-git。</p>
+<p>然后输入<code>hexo new post &quot;article title&quot;</code>，新建一篇文章。</p>
+<p>打开D:\personal\blog\source_posts目录，可以发现下面多了一个.md文件，用来存放文章文件。</p>
+<p>编写完markdown文件后，跟目录下git bash中输入hexo g生成静态网页，然后输入hexo s可以本地预览效果，hexo d上传github。接着打开github.io就可以看到发布的文章了。</p>
+<h2 id="绑定域名"><a href="#绑定域名" class="headerlink" title="绑定域名"></a>绑定域名</h2><p>我们现在默认的域名还是xxx.github.io，如果你也想和我一样弄一个专属域名，首先要购买一个域名，阿里云、腾讯云都可以购买。</p>
+<p>以我的腾讯云为例，如图所示需要添加两条解析记录：</p>
+<p><img src="/img/%E8%A7%A3%E6%9E%90%E8%AE%B0%E5%BD%95" alt=""></p>
+<p>然后打开github博客项目，点击settings，拉到下面Custom domain处，填上域名保存就好了。</p>
+<p>此时项目根目录应该会出现一个名为CNAME的文件，如果没有打开本地博客/source目录，新建CNAME文件，没有后缀！在文件里面写上你的域名保存。最后在博客根目录下git bash，hexo g、hexo d上传到GitHub上面。</p>
+<p>至此我们的博客就搭建的差不多了，因为本菜鸡的博客主题是另外一个大佬Xavier帮忙弄的，所以这里就不分享啦，如有需要可以参考一下我放在文章开始的那位大佬的博客。</p>
+<p>下面就是我的博客的效果图了：</p>
+<p><img src="/img/%E5%8D%9A%E5%AE%A2%E6%95%88%E6%9E%9C.jpg" alt=""></p>
+<p>这篇简单的分享就到此结束啦，下面附上Xavier大佬的博客</p>
+<p><a href="https://www.xav1er.top/" target="_blank" rel="noopener">https://www.xav1er.top/</a></p>
 
             </div>
             <hr/>
@@ -482,8 +532,8 @@
                                     <span class="chip bg-color">Typora</span>
                                 </a>
                             
-                                <a href="/tags/Markdown/">
-                                    <span class="chip bg-color">Markdown</span>
+                                <a href="/tags/Markdown%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5%EF%BC%9A/">
+                                    <span class="chip bg-color">Markdown参考链接：</span>
                                 </a>
                             
                         </div>
@@ -569,8 +619,8 @@
                         <span class="chip bg-color">Typora</span>
                     </a>
                     
-                    <a href="/tags/Markdown/">
-                        <span class="chip bg-color">Markdown</span>
+                    <a href="/tags/Markdown%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5%EF%BC%9A/">
+                        <span class="chip bg-color">Markdown参考链接：</span>
                     </a>
                     
                 </div>

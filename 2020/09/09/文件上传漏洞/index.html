@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="bugku-web-字符？正则？, charlieputhr的小屋">
+    <meta name="keywords" content="文件上传漏洞, charlieputhr的小屋">
     <meta name="description" content="西科大/计算机学院/信安/咸鱼">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>bugku-web-字符？正则？ | charlieputhr的小屋</title>
+    <title>文件上传漏洞 | charlieputhr的小屋</title>
     <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/medias/favicon.ico">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -245,12 +245,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/img/16.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">bugku-web-字符？正则？</h1>
+                    <h1 class="description center-align post-title">文件上传漏洞</h1>
                 </div>
             </div>
         </div>
@@ -367,12 +367,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
-                                <span class="chip bg-color">正则表达式</span>
-                            </a>
-                        
-                            <a href="/tags/php/">
-                                <span class="chip bg-color">php</span>
+                            <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/">
+                                <span class="chip bg-color">文件上传漏洞</span>
                             </a>
                         
                     </div>
@@ -396,7 +392,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-08-13
+                    2020-09-09
                 </div>
                 
 
@@ -412,66 +408,34 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>一直以为自己还是能看懂稍微简单点的正则表达式，直到遇见这道题，我才知道自己是有多么的垃圾😥</p>
-<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p><img src="/img/%E5%AD%97%E7%AC%A6%E6%AD%A3%E5%88%99%E9%A2%98%E7%9B%AE.png" alt=""></p>
-<p>打开题目直接显示源码</p>
-<p><img src="/img/%E5%AD%97%E7%AC%A6%E6%AD%A3%E5%88%99%E4%BB%A3%E7%A0%81.png" alt=""></p>
-<pre class=" language-php"><code class="language-php"><span class="token delimiter">&lt;?php</span>
-<span class="token function">highlight_file</span><span class="token punctuation">(</span><span class="token string">'2.php'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token variable">$key</span><span class="token operator">=</span><span class="token string">'KEY{********************************}'</span><span class="token punctuation">;</span>
-<span class="token variable">$IM</span><span class="token operator">=</span> <span class="token function">preg_match</span><span class="token punctuation">(</span><span class="token string">"/key.*key.{4,7}key:\/.\/(.*key)[a-z][[:punct:]]/i"</span><span class="token punctuation">,</span> <span class="token function">trim</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string">"id"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token variable">$match</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token variable">$IM</span> <span class="token punctuation">)</span><span class="token punctuation">{</span> 
- <span class="token keyword">die</span><span class="token punctuation">(</span><span class="token string">'key is: '</span><span class="token punctuation">.</span><span class="token variable">$key</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span class="token delimiter">?></span></code></pre>
-<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><p>直接看关键部分:</p>
-<p><code>preg_match(&quot;/key.*key.{4,7}key:\/.\/(.*key)[a-z][[:punct:]]/i&quot;, trim($_GET[&quot;id&quot;]), $match)</code></p>
-<ul>
-<li><code>key</code>,在正则表达式里没有特殊字符的都是字符串，所以这里直接匹配key即可,<code>?id=key</code></li>
-</ul>
-<ul>
-<li><code>.</code>，<code>.</code>表示除\n外的任何单字符，所以我们这里匹配任意一个单字符都行，这里选择匹配a，<code>?id=keya</code></li>
-</ul>
-<ul>
-<li><code>*</code>,<code>*</code>匹配前面的表达式零次或多次，这里就是匹配前面<code>.</code>所代表的表达式零次或多次，如果零次则是<code>?id=key</code>,若是1次则<code>?id=keya</code>，匹配两次则是<code>?id=keyaa</code>,这里我选择的是最好理解的一次:<code>?id=keya</code></li>
-</ul>
-<ul>
-<li><code>key</code>，同上面的key一样，再来一次，<code>?id=keyakey</code></li>
-</ul>
-<ul>
-<li><code>.</code>,同上面的一样，<code>?id=keyakeya</code></li>
-</ul>
-<ul>
-<li><code>{4,7}</code>,表示匹配前面的表达式最少4次最多7次，这里表示匹配前面<code>.</code>代表的表达式最少4次最多7次，这里我选择的是匹配4次（简单一点），<code>?id=keyakeyaaaa</code></li>
-</ul>
-<ul>
-<li><code>key</code>,再次同上面的<code>key</code>，<code>?id=keyakeyaaaakey</code></li>
-</ul>
-<ul>
-<li><code>:</code>,匹配一个<code>:</code>,<code>?id=keyakeyaaaakey:</code></li>
-</ul>
-<ul>
-<li><code>\/</code>,<code>\</code>是一个转义符，这里表示的是匹配一个<code>/</code>字符，所以在后面添加一个<code>/</code>即可，<code>?id=keyakeyaaaakey:/</code></li>
-</ul>
-<ul>
-<li><code>.</code>,继续重复，<code>?id=keyakeyaaaakey:/a</code></li>
-</ul>
-<ul>
-<li><code>\/</code>,同上，添加一个<code>/</code>即可，<code>?id=keyakeyaaaakey:/a/</code></li>
-</ul>
-<ul>
-<li><code>(.*key)</code>,表示匹配()里面的整个表达式，<code>.</code>我选择的还是匹配a,<code>*</code>我选择的是匹配1次,然后再匹配一个key,即<code>?id=keyakeyaaaakey:/a/akey</code></li>
-</ul>
-<ul>
-<li><code>[a-z]</code>,匹配a-z中任意的一个字符，我选择的还是匹配a，<code>?id=keyakeyaaaakey:/a/akeya</code></li>
-</ul>
-<ul>
-<li><code>[[:punct:]]</code>,表示的是匹配任意一个标点符号，这里我选择的是<code>~</code>，所以我构造的完整的payload是：<code>?id=keyakeyaaaakey:/a/akeya~</code></li>
-</ul>
-<p>这样我们就得到flag啦</p>
-<p><img src="/img/%E5%AD%97%E7%AC%A6%E6%AD%A3%E5%88%99flag.png" alt=""></p>
-<p>最后附上一篇正则表达式基本语法的博客：</p>
-<p><a href="https://www.runoob.com/regexp/regexp-syntax.html" target="_blank" rel="noopener">https://www.runoob.com/regexp/regexp-syntax.html</a></p>
+                <p>这个漏洞是之前做题的时候遇到的，就结合大佬的讲解谈一谈这个很简单的漏洞</p>
+<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>题目来源是攻防世界的upload1，打开环境发现这是一个很典型的文件上传漏洞，然后通过查看源代码发现上传的文件类型必须是jpg或者是png。</p>
+<p><img src="/img/xctf_web_upload1%E4%B8%8A%E4%BC%A0%E6%8F%90%E7%A4%BA.png" alt=""></p>
+<p>接着用一句话木马上传，直接修改文件后缀为jpg或者png上传，抓包，修改文件后缀名为php</p>
+<p><img src="/img/xctf_web_upload1_burp.png" alt=""></p>
+<p>使用蚁剑连接</p>
+<p><img src="/img/xctf_web_upload1_flag.php.png" alt=""></p>
+<p>发现flag文件，得到flag</p>
+<p><img src="/img/xctf_web_upload1_flag.png" alt=""></p>
+<h2 id="漏洞简介"><a href="#漏洞简介" class="headerlink" title="漏洞简介"></a>漏洞简介</h2><p>由于程序员在对用户文件上传部分的控制不足或处理缺陷，导致用户可以越过其本身权限向服务器上传可执行的动态脚本文件。上传的文件可以是木马，病毒，恶意脚本，webshell等等。“文件上传”本身没有问题，关键是文件上传后，服务器怎么处理、解释文件。</p>
+<h2 id="漏洞成因"><a href="#漏洞成因" class="headerlink" title="漏洞成因"></a>漏洞成因</h2><ol>
+<li>对上传文件的后缀名没有做较为严格的限制</li>
+<li>开源编辑器的上传漏洞</li>
+<li>服务器配置不当</li>
+<li>本地文件上传限制被绕过</li>
+<li>过滤不严或被绕过</li>
+<li>文件解析漏洞导致文件执行</li>
+<li>文件路径截断</li>
+</ol>
+<h2 id="漏洞危害"><a href="#漏洞危害" class="headerlink" title="漏洞危害"></a>漏洞危害</h2><p>恶意文件传递给解释器去执行，之后可以在服务器上执行恶意代码，进行数据库执行，服务器文件管理，服务器命令执行等恶意操作。</p>
+<ol>
+<li>web脚本语言：服务器的web容器解释并执行了用户上传的脚本，导致代码执行</li>
+<li>Flash的策略文件crossdomain.xml, 控制Flash在该域下的行为</li>
+<li>病毒、木马文件：诱骗客户/管理员下载执行</li>
+<li>钓鱼图片/包含脚本的图片：被作为脚本执行，钓鱼和欺诈</li>
+</ol>
+<h2 id="绕过上传漏洞"><a href="#绕过上传漏洞" class="headerlink" title="绕过上传漏洞"></a>绕过上传漏洞</h2><p>客户端检测：客户端使用js检测，在文件未上传时就对文件进行验证</p>
+<p>服务器端检测：服务端脚本一般会检测文件的MIME类型，检测文件扩展名是否合法，甚至有些程序员检测文件中是否嵌入恶意代码。</p>
 
             </div>
             <hr/>
@@ -497,7 +461,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://charlieputhr.cn/2020/08/13/bugku-web-%E5%AD%97%E7%AC%A6%EF%BC%9F%E6%AD%A3%E5%88%99/">http://charlieputhr.cn/2020/08/13/bugku-web-%E5%AD%97%E7%AC%A6%EF%BC%9F%E6%AD%A3%E5%88%99/</a>
+                    <a href="http://charlieputhr.cn/2020/09/09/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/">http://charlieputhr.cn/2020/09/09/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -535,12 +499,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
-                                    <span class="chip bg-color">正则表达式</span>
-                                </a>
-                            
-                                <a href="/tags/php/">
-                                    <span class="chip bg-color">php</span>
+                                <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/">
+                                    <span class="chip bg-color">文件上传漏洞</span>
                                 </a>
                             
                         </div>
@@ -586,24 +546,24 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/09/09/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/">
+                <a href="/2020/09/11/ssti%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="文件上传漏洞">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="ssti模板注入漏洞">
                         
-                        <span class="card-title">文件上传漏洞</span>
+                        <span class="card-title">ssti模板注入漏洞</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            文件上传漏洞
+                            对ssti模板注入漏洞一个浅浅的理解
                         
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-09-09
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-09-11
                         </span>
                         <span class="publish-author">
                             
@@ -620,8 +580,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/">
-                        <span class="chip bg-color">文件上传漏洞</span>
+                    <a href="/tags/ssti%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/">
+                        <span class="chip bg-color">ssti模板注入</span>
+                    </a>
+                    
+                    <a href="/tags/flask%E6%A1%86%E6%9E%B6/">
+                        <span class="chip bg-color">flask框架</span>
                     </a>
                     
                 </div>
@@ -635,24 +599,23 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/08/04/Robots%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/">
+                <a href="/2020/08/13/bugku-web-%E5%AD%97%E7%AC%A6%EF%BC%9F%E6%AD%A3%E5%88%99/">
                     <div class="card-image">
                         
+                        <img src="/img/16.jpg" class="responsive-img" alt="bugku-web-字符？正则？">
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Robots文件信息泄露">
-                        
-                        <span class="card-title">Robots文件信息泄露</span>
+                        <span class="card-title">bugku-web-字符？正则？</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Robots文件漏洞
+                            bugku一道简单的正则匹配
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-04
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-13
                             </span>
                         <span class="publish-author">
                             
@@ -669,12 +632,12 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Markdown/">
-                        <span class="chip bg-color">Markdown</span>
+                    <a href="/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+                        <span class="chip bg-color">正则表达式</span>
                     </a>
                     
-                    <a href="/tags/Robots-txt%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/">
-                        <span class="chip bg-color">Robots.txt信息泄露</span>
+                    <a href="/tags/php/">
+                        <span class="chip bg-color">php</span>
                     </a>
                     
                 </div>

